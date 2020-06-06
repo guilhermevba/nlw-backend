@@ -1,9 +1,10 @@
-import express from 'express'
+import express from "express";
+import {create} from "../controllers/pointsController"
 
-const routes = express()
+const routes = express();
 
-routes.get('/', (request, response) => {
-  response.send('points routes')
-})
+routes.post("/", async (request, response) => {
+  response.send(await create(request.body))
+});
 
-export default routes
+export default routes;
