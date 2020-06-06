@@ -1,14 +1,9 @@
 import express, { request } from 'express'
-import knex from '../database/connection'
+import itemsRoutes from './items' 
+import pointsRoutes from './points'
 const routes = express()
 
-routes.get('/items', async(request, response) => {
-  const items = await knex('items').select('*')
-  response.send(items.map(item => ({
-    ...item,
-    image_url: `http://localhost:3333/uploads/${item.image}`
-  })))
-})
-
+routes.use('/items', itemsRoutes)
+routes.use('/points', pointsRoutes)
 
 export default routes
