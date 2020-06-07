@@ -1,10 +1,10 @@
 import express from "express";
 import { create, show, list } from "../controllers/pointsController";
-
+import multer from "multer";
 const routes = express();
 
-routes.post("/", async (request, response) => {
-  response.send(await create(request.body));
+routes.post("/", multer({dest: 'uploads/'}).single('file'), async (request, response) => {
+  response.send(await create(request.file, request.body));
 });
 
 routes.get("/", async (request, response) => {

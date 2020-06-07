@@ -22,28 +22,22 @@ export const list = async (query: any) => {
   const points = await knex("points")
     .join("points_items", "points.id", "points_items.point_id")
     .whereIn("points_items.item_id", parsedItems)
-    .where('city', String(city))
-    .where('uf', String(uf))
+    .where("city", String(city))
+    .where("uf", String(uf))
     .distinct()
-    .select('points.*');
+    .select("points.*");
 
   return points;
 };
 
-export const create = async ({
-  name,
-  email,
-  whatsapp,
-  latitude,
-  longitude,
-  city,
-  uf,
-  items,
-}: Point) => {
+export const create = async (
+  imageFile: any,
+  { name, email, whatsapp, latitude, longitude, city, uf, items }: Point
+) => {
   const trx = await knex.transaction();
   try {
     const point = {
-      image: "https://images.unsplash.com/photo-1554486855-60050042cd53?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=40",
+      image: `http://localhost:3333/uploads/${imageFile.filename}`,
       name,
       email,
       whatsapp,
@@ -52,6 +46,7 @@ export const create = async ({
       city,
       uf,
     };
+    console.log(point)
     const insertedIds = await trx("points").insert(point);
     console.log(insertedIds);
     const point_id = insertedIds[0];
