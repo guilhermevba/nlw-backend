@@ -31,24 +31,22 @@ export const list = async (query: any) => {
 };
 
 export const create = async (
-  imageFile: any,
-  { name, email, whatsapp, latitude, longitude, city, uf, items }: Point
+  image: any,
+  { name, whatsapp, email, city, uf, latitude, longitude, items }: Point
 ) => {
   const trx = await knex.transaction();
   try {
-    const point = {
-      image: `http://localhost:3333/uploads/${imageFile.filename}`,
+    const formatedPoint = {
       name,
-      email,
       whatsapp,
-      latitude,
-      longitude,
+      email,
       city,
       uf,
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+      image: image ? image.filename : "no-image",
     };
-    console.log(point)
-    const insertedIds = await trx("points").insert(point);
-    console.log(insertedIds);
+    const insertedIds = await trx("points").insert(formatedPoint);
     const point_id = insertedIds[0];
 
     const point_items = items.map((item_id: number) => ({
@@ -58,8 +56,9 @@ export const create = async (
 
     await trx("points_items").insert(point_items);
     await trx.commit();
-    return { id: point_id, ...point };
+    return { id: point_id, ...formatedPoint };
   } catch (err) {
+    trx.rollback();
     return { message: "Something went wrong creating Poin", innerMessage: err };
   }
 };

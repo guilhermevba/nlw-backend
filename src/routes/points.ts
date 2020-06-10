@@ -1,11 +1,18 @@
 import express from "express";
 import { create, show, list } from "../controllers/pointsController";
 import multer from "multer";
+import { multerConfig } from "../config/multer";
 const routes = express();
+const upload = multer(multerConfig)
 
-routes.post("/", multer({dest: 'uploads/'}).single('file'), async (request, response) => {
-  response.send(await create(request.file, request.body));
-});
+routes.post(
+  "/",
+  upload.single("file"),
+  async (request, response) => {
+    console.log(request.body);
+    response.send(await create(request.file, request.body));
+  }
+);
 
 routes.get("/", async (request, response) => {
   response.send(await list(request.query));
