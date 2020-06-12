@@ -10,7 +10,13 @@ export const show = async (id: number) => {
     .join("points_items", "items.id", "=", "points_items.item_id")
     .where("points_items.point_id", id)
     .select("items.title");
-  return { point, items };
+  return {
+    point: {
+      ...point,
+      image_url: `http://localhost:3333/tmp/${point.image}`
+    },
+    items
+  };
 };
 
 export const list = async (query: any) => {
@@ -26,8 +32,11 @@ export const list = async (query: any) => {
     .where("uf", String(uf))
     .distinct()
     .select("points.*");
-
-  return points;
+  const serializedPoints = points.map(point => ({
+    ...point,
+    image_url: `http://localhost:3333/tmp/${point.image}`
+  }))
+  return serializedPoints;
 };
 
 export const create = async (
@@ -45,6 +54,7 @@ export const create = async (
       latitude: Number(latitude),
       longitude: Number(longitude),
       image: image ? image.filename : "no-image",
+
     };
     const insertedIds = await trx("points").insert(formatedPoint);
     const point_id = insertedIds[0];

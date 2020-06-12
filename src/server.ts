@@ -10,6 +10,10 @@ app.use(
   "/uploads",
   routes.use(express.static(path.resolve(__dirname, "..", "uploads")))
 );
+app.use(
+  "/tmp",
+  routes.use(express.static(path.resolve(__dirname, "..", "tmp")))
+);
 
 app.use(routes);
 
