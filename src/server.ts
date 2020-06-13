@@ -14,10 +14,11 @@ app.use("/health", (request, response) => {
 });
 
 const port = process.env.PORT || 5000;
-const server = app.listen(port, () =>
+const address = process.env.ADDRESS || `http://localhost:${port}/`
+app.use(routes(address));
+
+app.listen(port, () =>
   console.log(`server listening on port ${port}`)
 );
 
-const address = process.env.ADDRESS || `http://localhost:${port}`
 
-app.use(routes(address));

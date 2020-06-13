@@ -13,7 +13,7 @@ export const show = async (id: number, address: string) => {
   return {
     point: {
       ...point,
-      image_url: `${address}/tmp/${point.image}`
+      image_url: `${address}tmp/${point.image}`
     },
     items
   };
@@ -34,7 +34,7 @@ export const list = async (query: any, address: string) => {
     .select("points.*");
   const serializedPoints = points.map(point => ({
     ...point,
-    image_url: `${address}/tmp/${point.image}`
+    image_url: `${address}tmp/${point.image}`
   }))
   return serializedPoints;
 };
