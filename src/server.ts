@@ -17,9 +17,7 @@ const port = process.env.PORT || 5000;
 const server = app.listen(port, () =>
   console.log(`server listening on port ${port}`)
 );
-const address =
-  server.address().address === "::"
-    ? `http://localhost:${server.address().port}`
-    : `${server.address().address}:${server.address().port}`;
+
+const address = process.env.ADDRESS || `http://localhost:${port}`
 
 app.use(routes(address));
