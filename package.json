@@ -4,9 +4,15 @@
   "description": "",
   "main": "build/src/server.js",
   "scripts": {
+    "start": "node build/server.js",
+    "build": "rm -rf build && npx tsc && npm run build:knex:migrate && npm run build:knex:seed && npm run copy-svg",
     "dev": "npx ts-node-dev --ignore-watch node_modules src/server.ts",
     "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
-    "knex:seed": "knex --knexfile knexfile.ts seed:run"
+    "build:knex:migrate":  "knex --knexfile knexfile_build.ts migrate:latest",
+    "knex:seed": "knex --knexfile knexfile.ts seed:run",
+    "build:knex:seed": "knex --knexfile knexfile_build.ts seed:run",
+    "copy-svg": "cp -r ./uploads build/uploads"
+
   },
   "keywords": [],
   "author": "",

@@ -1,2 +1,2 @@
-release: npm run knex:migrate
-web: npm run dev
+release:make build-server
+web: make run
