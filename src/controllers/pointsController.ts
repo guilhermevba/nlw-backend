@@ -1,7 +1,7 @@
 import knex from "../database/connection";
 import { Point } from "../entitites/Point";
 
-export const show = async (id: number) => {
+export const show = async (id: number, address: string) => {
   const point = await knex("points").where("id", id).first();
   if (!point) {
     throw new Error("Point not found");
@@ -13,13 +13,13 @@ export const show = async (id: number) => {
   return {
     point: {
       ...point,
-      image_url: `http://localhost:3333/tmp/${point.image}`
+      image_url: `${address}/tmp/${point.image}`
     },
     items
   };
 };
 
-export const list = async (query: any) => {
+export const list = async (query: any, address: string) => {
   const { city, uf, items } = query;
   const parsedItems = String(items)
     .split(",")
@@ -34,7 +34,7 @@ export const list = async (query: any) => {
     .select("points.*");
   const serializedPoints = points.map(point => ({
     ...point,
-    image_url: `http://localhost:3333/tmp/${point.image}`
+    image_url: `${address}/tmp/${point.image}`
   }))
   return serializedPoints;
 };

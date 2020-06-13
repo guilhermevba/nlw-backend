@@ -1,9 +1,13 @@
 import express, { request } from 'express'
 import itemsRoutes from './items' 
 import pointsRoutes from './points'
-const routes = express()
 
-routes.use('/items', itemsRoutes)
-routes.use('/points', pointsRoutes)
+const routesRoot = (address: string) => {
+  const routes = express()
+  routes.use('/points', pointsRoutes(address))
+  routes.use('/items', itemsRoutes(address))
+  return routes
+}
 
-export default routes
+
+export default routesRoot
