@@ -14,7 +14,10 @@ app.use(
   "/tmp",
   routes.use(express.static(path.resolve(__dirname, "..", "tmp")))
 );
+app.use("/health", (request, response) => {
+  response.json({running: true, datetime: Date.now()})
+})
 
 app.use(routes);
 
-app.listen(3333, () => console.log(" server listening on port 3333"));
+app.listen(80, () => console.log(" server listening on port 80"));
