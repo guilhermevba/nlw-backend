@@ -10,7 +10,6 @@ const routesPoints = (address: string) => {
     "/",
     upload.single("file"),
     async (request, response) => {
-      console.log(request.body);
       response.send(await create(request.file, request.body));
     }
   );
